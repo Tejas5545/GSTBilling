@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -48,8 +49,8 @@ public class PDFUtils {
     public void createPdf(Context context, String fileName){
 
         // write the document content
-        File folder = new File(Environment.getExternalStorageDirectory() + File.separator + "BillingPDFs");
-        folder.mkdirs();
+        File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        Log.e("path", String.valueOf(folder));
         String targetPdf = fileName + ".pdf";
         File filePath = new File(folder + File.separator + targetPdf);
         try {
@@ -57,6 +58,7 @@ public class PDFUtils {
             Toast.makeText(context, "File saved : " + filePath.toString(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("createPdf", e.toString());
             Toast.makeText(context, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
         }
 
@@ -64,11 +66,11 @@ public class PDFUtils {
         document.close();
 
         //open the saved pdf file
-        Uri uri = Uri.fromFile(filePath);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setDataAndType(uri, "application/pdf");
-        context.startActivity(intent);
+//        Uri uri = Uri.fromFile(filePath);
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.setDataAndType(uri, "application/pdf");
+//        context.startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
